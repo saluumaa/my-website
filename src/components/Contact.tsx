@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Mail, Github, Linkedin, Send, Download } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,12 +31,52 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-    setTimeout(() => {
-      alert('Thank you for your message! I will get back to you soon.');
+    try {
+      // EmailJS configuration - Get these from https://www.emailjs.com/
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS configuration missing. Please check your environment variables.');
+      }
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_name: 'Salum Ismail',
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
+      setErrorMessage('');
+    } catch (error: any) {
+      console.error('Email send failed:', error);
+
+      // Provide specific error messages based on the error
+      if (error?.text?.includes('template ID not found')) {
+        setErrorMessage('EmailJS Template ID not found. Please check your template ID in the EmailJS dashboard.');
+      } else if (error?.text?.includes('service ID not found')) {
+        setErrorMessage('EmailJS Service ID not found. Please check your service ID in the EmailJS dashboard.');
+      } else if (error?.text?.includes('public key')) {
+        setErrorMessage('Invalid EmailJS Public Key. Please check your public key in the EmailJS dashboard.');
+      } else if (error?.text?.includes('Bad Request')) {
+        setErrorMessage('Invalid EmailJS configuration. Please verify all your EmailJS credentials.');
+      } else if (error?.message?.includes('configuration missing')) {
+        setErrorMessage('EmailJS configuration is missing. Please check your .env file.');
+      } else {
+        setErrorMessage('Failed to send message. Please try again or contact me directly.');
+      }
+
+      setSubmitStatus('error');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -115,7 +159,7 @@ const Contact = () => {
           <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-              <form onSubmit={handleSubmit} className="relative bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="relative bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-gray-300 mb-2 font-medium">
                     Your Name
@@ -181,6 +225,28 @@ const Contact = () => {
                     </>
                   )}
                 </button>
+
+                {submitStatus === 'success' && (
+                  <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+                    <p className="text-green-400 text-center font-medium">
+                      ✅ Message sent successfully! I'll get back to you soon.
+                    </p>
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <p className="text-red-400 text-center font-medium">
+                      ❌ {errorMessage}
+                    </p>
+                  </div>
+                )}
+
+                {/* <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                  <p className="text-blue-300 text-sm text-center">
+                    💡 <strong>Note:</strong> To enable email functionality, set up EmailJS credentials in your .env file (see README.md)
+                  </p>
+                </div> */}
               </form>
             </div>
           </div>

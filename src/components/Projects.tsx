@@ -45,6 +45,14 @@ const Projects = () => {
 
   const projects = [
     {
+      title: 'NGO Client Management System',
+      description: 'Full-stack NGO client portal for managing beneficiaries, donations, and operations with secure authentication and data management.',
+      image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800',
+      tech: ['React', 'Node.js', 'Express', 'postgresql', 'JWT'],
+      liveLink: 'https://risala-website.vercel.app/',
+      githubLink: 'https://github.com/saluumaa/risala-website'
+    },
+    {
       title: 'CreativeHub',
       description: 'A full-stack freelancing platform connecting top talent with clients, featuring secure payments, AI-driven matching, and growth tools.',
       image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800',
@@ -67,14 +75,6 @@ const Projects = () => {
       tech: ['React', 'Tailwind CSS', 'Framer Motion'],
       liveLink: 'https://agencypro-two.vercel.app/',
       githubLink: 'https://github.com/saluumaa/agencypro-two'
-    },
-    {
-      title: 'NGO Client Management System',
-      description: 'Full-stack NGO client portal for managing beneficiaries, donations, and operations with secure authentication and data management.',
-      image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800',
-      tech: ['React', 'Node.js', 'Express', 'MongoDB', 'JWT'],
-      liveLink: 'https://client-k6efndbuf-saluumaas-projects.vercel.app/',
-      githubLink: 'https://github.com/saluumaa'
     }
   ];
 

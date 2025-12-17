@@ -52,8 +52,8 @@ SALUM ISMAIL - CV
 Full Stack Developer & Deputy-Head of ICT
 
 CONTACT INFORMATION
-Email: salum@example.com
-Phone: +252 XXX XXX XXX
+Email: salumhassan02@gmail.com
+Phone: +252 63-4452812
 Location: Borama, Somalia
 
 PROFESSIONAL SUMMARY
@@ -84,13 +84,13 @@ PROJECTS
 - NGO Client Management System: Full-stack NGO portal
 
 EDUCATION
-Bachelor's in Computer Science
+Bachelor's in Business Information Technology
 Microverse Coding Bootcamp
 
 CERTIFICATIONS
 - Full Stack Web Development
 - IT Management
-- Cloud Computing Fundamentals
+
     `;
 
         const blob = new Blob([cvContent], { type: 'text/plain' });
@@ -143,11 +143,11 @@ CERTIFICATIONS
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <Mail className="text-cyan-400" size={20} />
-                                <span className="text-gray-300">salum@example.com</span>
+                                <span className="text-gray-300">salumahassan02@gmail.com</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Phone className="text-cyan-400" size={20} />
-                                <span className="text-gray-300">+252 XXX XXX XXX</span>
+                                <span className="text-gray-300">+252 63-4452812</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <MapPin className="text-cyan-400" size={20} />
