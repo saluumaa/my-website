@@ -87,19 +87,19 @@ const Contact = () => {
     {
       icon: Github,
       name: 'GitHub',
-      url: 'https://github.com',
+      url: 'https://github.com/saluumaa',
       color: 'hover:text-gray-400'
     },
     {
       icon: Linkedin,
       name: 'LinkedIn',
-      url: 'https://linkedin.com',
+      url: 'https://www.linkedin.com/in/salma-h-ibrahim/',
       color: 'hover:text-blue-400'
     },
     {
       icon: Mail,
       name: 'Email',
-      url: 'mailto:salum@example.com',
+      url: 'mailto:salumahassan02@gmail.com',
       color: 'hover:text-cyan-400'
     }
   ];
