@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Download, Mail, Phone, MapPin, Calendar, Award, Code, Database, Palette } from 'lucide-react';
+import { Download, Mail, Phone, MapPin, Calendar, Award, Code } from 'lucide-react';
+import jsPDF from 'jspdf';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -9,6 +10,13 @@ gsap.registerPlugin(ScrollTrigger);
 const CV = () => {
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
+    // Roles
+    const roles = [
+        'Full Stack Developer',
+        'Mentor',
+        'Teacher',
+        'Graphic Designer'
+    ];
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -44,64 +52,111 @@ const CV = () => {
     }, []);
 
     const handleDownloadCV = () => {
-        // Create a simple PDF-like content or link to a PDF
-        // For now, we'll create a downloadable text file
-        const cvContent = `
-SALUM ISMAIL - CV
-
-Full Stack Developer & Deputy-Head of ICT
-
-CONTACT INFORMATION
-Email: salumhassan02@gmail.com
-Phone: +252 63-4452812
-Location: Borama, Somalia
-
-PROFESSIONAL SUMMARY
-Experienced Full Stack Developer and Deputy-Head of ICT with expertise in modern web technologies.
-Passionate about building scalable applications and leading IT initiatives.
-
-SKILLS
-Frontend: HTML, CSS, JavaScript, React, Next.js, Tailwind CSS, TypeScript
-Backend: Node.js, Express, Python, PostgreSQL, MongoDB, Prisma
-Tools: Git, VSCode, Docker, AWS, Vercel, Netlify
-Other: IT Management, System Administration, Network Troubleshooting
-
-EXPERIENCE
-Deputy-Head of ICT
-- Leading IT operations and infrastructure management
-- Managing system deployments and maintenance
-- Overseeing network security and troubleshooting
-
-Full Stack Developer
-- Developed multiple full-stack applications including freelancing platforms, agricultural trading systems, and NGO management portals
-- Built responsive web applications with modern frameworks
-- Implemented secure authentication and data management systems
-
-PROJECTS
-- CreativeHub: Full-stack freelancing platform
-- AgriTrade: Agricultural trading platform
-- AgencyPro: Digital agency website
-- NGO Client Management System: Full-stack NGO portal
-
-EDUCATION
-Bachelor's in Business Information Technology
-Microverse Coding Bootcamp
-
-CERTIFICATIONS
-- Full Stack Web Development
-- IT Management
-
-    `;
-
-        const blob = new Blob([cvContent], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Salum_Ismail_CV.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        // Download CV as PDF using jsPDF
+        const doc = new jsPDF();
+        let y = 10;
+        doc.setFontSize(18);
+        doc.text('SALMA IBRAHIM - CV', 10, y);
+        y += 10;
+        doc.setFontSize(12);
+        doc.text('ROLES: ' + roles.join(' | '), 10, y);
+        y += 10;
+        doc.text('CONTACT INFORMATION', 10, y);
+        y += 8;
+        doc.text('Email: salumahassan02@gmail.com', 10, y);
+        y += 6;
+        doc.text('Phone: +252 63-4452812', 10, y);
+        y += 6;
+        doc.text('Location: Borama, Somalia', 10, y);
+        y += 10;
+        doc.setFont(undefined, 'bold');
+        doc.text('SUMMARY', 10, y);
+        doc.setFont(undefined, 'normal');
+        y += 8;
+        doc.text('Full Stack Developer, Mentor, Teacher, and Graphic Designer with expertise in Ruby on Rails, Node.js, React, JavaScript, and design tools. Proven problem-solving and communication skills. Previous role as a University teacher honed my management and problem-solving abilities. Remote work expert known for producing clean code and fostering effective collaboration. Eager to contribute my technical, creative, and soft skills to your team.', 10, y, { maxWidth: 190 });
+        y += 18;
+        doc.setFont(undefined, 'bold');
+        doc.text('SKILLS', 10, y);
+        doc.setFont(undefined, 'normal');
+        y += 8;
+        doc.text('Front-End: JavaScript, React, Redux, HTML5, CSS3, Bootstrap', 10, y);
+        y += 6;
+        doc.text('Back-End: Ruby, Ruby on Rails, Node.js, MySQL, PostgreSQL', 10, y);
+        y += 6;
+        doc.text('Design: Adobe Photoshop, Illustrator, Figma, Canva', 10, y);
+        y += 6;
+        doc.text('Tools & Methods: Git, GitHub, Heroku, Netlify, RSpec, TDD, Chrome Dev Tools, Render, WebPack, Jest', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.text('Professional: Remote Pair-Programming, Teamwork, Mentoring, Communication', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.setFont(undefined, 'bold');
+        doc.text('EXPERIENCE', 10, y);
+        doc.setFont(undefined, 'normal');
+        y += 8;
+        doc.text('HIGHLIGHTED PERSONAL PROJECTS (Remote)', 10, y);
+        y += 6;
+        doc.text('Full Stack Web Developer (Jan 2023 – Present)', 10, y);
+        y += 6;
+        doc.text('Car Hub — App for car reservations, buying, and renting (Ruby on Rails API, React, Redux, PostgreSQL)', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.text('Budget App — Expense tracker for transactions (Ruby on Rails, PostgreSQL)', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.text('Book Store — Book management and reading tracker (React, Redux, JavaScript, CSS)', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.text('Portfolio Website — Modern portfolio with React, Tailwind CSS, Vite, and EmailJS (2024)', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.text('E-commerce Dashboard — Admin dashboard for managing products and orders (React, Node.js, MongoDB, 2025)', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.text('Design Gallery — Graphic design showcase using Figma and Canva (2025)', 10, y, { maxWidth: 190 });
+        y += 12;
+        doc.text('MICROVERSE (Remote)', 10, y);
+        y += 6;
+        doc.text('Mentor (Volunteer) (March 2023 – Present)', 10, y);
+        y += 6;
+        doc.text('Mentored seven junior web developers, providing technical support through code reviews.', 10, y, { maxWidth: 190 });
+        y += 8;
+        doc.text('Proposed improvements to code organization leading to 15% increase in code quality and overall performance.', 10, y, { maxWidth: 190 });
+        y += 8;
+        doc.text('Provided advice and tips on maintaining motivation, contributing to all seven mentored students maintaining longevity in the program.', 10, y, { maxWidth: 190 });
+        y += 12;
+        doc.text('Amoud University (Borama, Somalia)', 10, y);
+        y += 6;
+        doc.text('Teacher (March 2017 – July 2022)', 10, y);
+        y += 6;
+        doc.text('Supervised senior students with their projects, overseeing the successful completion of 100+ projects.', 10, y, { maxWidth: 190 });
+        y += 8;
+        doc.text('Created assessment forms for student individual projects, resulting in a 30% increase in student performance.', 10, y, { maxWidth: 190 });
+        y += 12;
+        doc.setFont(undefined, 'bold');
+        doc.text('EDUCATION', 10, y);
+        doc.setFont(undefined, 'normal');
+        y += 8;
+        doc.text('MICROVERSE (January 2023 – Present)', 10, y);
+        y += 6;
+        doc.text('Remote Full Stack Web Development Program, Full Time', 10, y);
+        y += 6;
+        doc.text('Spent 1300+ hours mastering algorithms, data structures, and full-stack development while simultaneously developing projects with Ruby, Rails, JavaScript, React, and Redux.', 10, y, { maxWidth: 190 });
+        y += 10;
+        doc.text('Developed skills in remote pair-programming using GitHub, industry-standard gitflow, and daily standups to communicate and collaborate with international remote developers.', 10, y, { maxWidth: 190 });
+        y += 12;
+        doc.text('Amoud University (September 2012 – August 2016)', 10, y);
+        y += 6;
+        doc.text('Bachelor of Business Information Technology', 10, y);
+        y += 6;
+        doc.text('Developed Inpatient Management System using VB.net.', 10, y, { maxWidth: 190 });
+        y += 8;
+        doc.text('Top academic performer in the faculty of ICT.', 10, y, { maxWidth: 190 });
+        y += 12;
+        doc.setFont(undefined, 'bold');
+        doc.text('GRAPHIC DESIGN', 10, y);
+        doc.setFont(undefined, 'normal');
+        y += 8;
+        doc.text('Freelance Graphic Designer (2022 – Present)', 10, y);
+        y += 6;
+        doc.text('• Designed logos, banners, and marketing materials for clients using Adobe Photoshop, Illustrator, Figma, and Canva.', 10, y, { maxWidth: 190 });
+        y += 8;
+        doc.text('• Created visual content for web and social media platforms.', 10, y, { maxWidth: 190 });
+        doc.save('Salma_Ibrahim_CV.pdf');
     };
 
     return (
@@ -119,6 +174,13 @@ CERTIFICATIONS
                         Curriculum Vitae
                     </h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mx-auto rounded-full mb-8"></div>
+                    <div className="flex flex-wrap justify-center gap-2 mb-4">
+                        {roles.map((role) => (
+                            <span key={role} className="inline-block bg-cyan-700/80 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                {role}
+                            </span>
+                        ))}
+                    </div>
                     <button
                         onClick={handleDownloadCV}
                         className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white hover:scale-105 transition-transform duration-300"
